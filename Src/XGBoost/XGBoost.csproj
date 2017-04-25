@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Booster.cs" />
+    <Compile Include="TreeSettings.cs" />
     <Compile Include="DMatrix.cs" />
     <Compile Include="LabeledPoint.cs" />
     <Compile Include="XGBClassifier.cs" />

@@ -44,7 +44,7 @@ namespace XGBoost
 		}
 
 		/// <summary>
-		/// Creates an instance of <see cref="DMatrix"/> from a given dense matrix.
+		/// Creates an instance of <see cref="DMatrix"/> from a given data row by row.
 		/// </summary>
 		/// <param name="data">Matrix values.</param>
 		/// <param name="nrow">Number of rows.</param>
