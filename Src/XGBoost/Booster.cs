@@ -7,6 +7,15 @@
 	using System.Threading.Tasks;
 	using System.Runtime.InteropServices;
 
+	public interface IObjective
+	{
+
+	}
+
+	public interface IEvaluation
+	{
+	}
+
 	class Booster
 	{
 		private IntPtr _handle;
@@ -81,7 +90,7 @@
 		}
 
 		/// <summary>
-		/// Update with given gradient and hessian. 
+		/// Update with given gradient and hessian.
 		/// </summary>
 		/// <param name="train">Training data.</param>
 		/// <param name="grad">First order of gradient.</param>
@@ -120,6 +129,23 @@
 			float[] rawPredicts = new float[length];
 			Marshal.Copy(predictionsPtr, rawPredicts, 0, length);
 			return rawPredicts;
+		}
+
+		public void Train(DMatrix train, Dictionary<string, object> parameters, int round,
+				Dictionary<string, DMatrix> watchers) {
+			string[] names = new string[watchers.Count];
+			DMatrix[] matrices = new DMatrix[watchers.Count + 1];
+			matrices[0] = train;
+			int ix = 0;
+			foreach (var watcher in watchers) {
+				names[ix++] = watcher.Key;
+				matrices[ix] = watcher.Value;
+			}
+			for (int i = 0; i < round; i++) {
+				//TODO: Add IObjective update
+				Update(train, i);
+				throw new NotImplementedException();
+			}
 		}
 
 		/// <summary>
