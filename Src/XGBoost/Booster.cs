@@ -7,15 +7,6 @@
 	using System.Threading.Tasks;
 	using System.Runtime.InteropServices;
 
-	public interface IObjective
-	{
-
-	}
-
-	public interface IEvaluation
-	{
-	}
-
 	class Booster
 	{
 		private IntPtr _handle;
@@ -44,7 +35,7 @@
 		/// <returns>The created <see cref="Booster"/>.</returns>
 		/// <exception cref="ArgumentNullException">If path is null.</exception>
 		/// <exception cref="XGBoostException">Native call error.</exception>
-		public Booster LoadModel(string path) {
+		public static Booster LoadModel(string path) {
 			if (path == null) {
 				throw new ArgumentNullException("path");
 			}
@@ -113,6 +104,18 @@
 		/// <returns>Eval information</returns>
 		/// <exception cref="XGBoostException">Native call error.</exception>
 		public string EvalSet(DMatrix[] evalMatrices, string[] evalNames, int iter) {
+			if (evalMatrices.Length != evalNames.Length) {
+				throw new ArgumentException(string.Format("evalMatrices/evalNames length differ {0}/{1}", evalMatrices.Length, evalNames.Length));
+			}
+			IntPtr[] handles = evalMatrices.Select(matrix => matrix.GetHandle()).ToArray();
+			string evalInfo;
+			int exitCode = XGBoostNative.XGBoosterEvalOneIter(_handle, iter, handles, evalNames, (ulong)handles.Length, out evalInfo);
+			XGBoostError.CheckError(exitCode);
+			return evalInfo;
+		}
+
+		//TODO: Documentation.
+		public string EvalSet(DMatrix[] evalMatrices, string[] evalNames, int iter, out float[] metricsOut) {
 			throw new NotImplementedException();
 		}
 
@@ -131,21 +134,43 @@
 			return rawPredicts;
 		}
 
-		public void Train(DMatrix train, Dictionary<string, object> parameters, int round,
-				Dictionary<string, DMatrix> watchers) {
-			string[] names = new string[watchers.Count];
-			DMatrix[] matrices = new DMatrix[watchers.Count + 1];
-			matrices[0] = train;
-			int ix = 0;
-			foreach (var watcher in watchers) {
-				names[ix++] = watcher.Key;
-				matrices[ix] = watcher.Value;
-			}
-			for (int i = 0; i < round; i++) {
-				//TODO: Add IObjective update
-				Update(train, i);
-				throw new NotImplementedException();
-			}
+		//TODO: Documentation.
+		public float[][] PredictLeaf(DMatrix data, int treeLimit) {
+			throw new NotImplementedException();
+		}
+
+		//TODO: Documentation.
+		public float[][] Predict(DMatrix data) {
+			throw new NotImplementedException();
+		}
+
+		//TODO: Documentation.
+		public float[][] Predict(DMatrix data, bool outputMargin) {
+			throw new NotImplementedException();
+		}
+
+		//TODO: Documentation.
+		public float[][] Predict(DMatrix data, bool outputMargin, int treeLimit) {
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Saves model to given path.
+		/// </summary>
+		/// <param name="modelPath">Path.</param>
+		public void SaveModel(string modelPath) {
+			int exitCode = XGBoostNative.XGBoosterSaveModel(_handle, modelPath);
+			XGBoostError.CheckError(exitCode);
+		}
+
+		//TODO: Documentation.
+		public string[] GetModelDump(string featureName, bool withStats) {
+			throw new NotImplementedException();
+		}
+
+		//TODO: Documentation.
+		public Dictionary<string, int> GetFeatureScore(string featureMap) {
+			throw new NotImplementedException();
 		}
 
 		/// <summary>

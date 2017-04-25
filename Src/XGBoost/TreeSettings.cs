@@ -64,7 +64,7 @@
 		/// <summary>
 		/// Minimum loss reduction required to make a further partition on a leaf node of the tree.
 		/// The larger, the more conservative the algorithm will be.
-		/// /// <para>this parameter also denoted as "gamma".</para>
+		/// <para>this parameter also denoted as "gamma".</para>
 		/// <para>Default: 0.0</para>
 		/// <para>Range:   [0,Inf)</para>
 		/// <para>Alias:   "min_split_loss"</para>

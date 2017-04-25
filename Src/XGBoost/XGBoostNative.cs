@@ -230,6 +230,26 @@ namespace XGBoost
 			ulong len);
 
 		/// <summary>
+		/// Get evaluation statistics.
+		/// </summary>
+		/// <param name="bHandle">The pointer to the model.</param>
+		/// <param name="iter">Current iteration rounds.</param>
+		/// <param name="dMtrices">Matrices, that are set to be evaluated.</param>
+		/// <param name="names">Name of each matrix.</param>
+		/// <param name="len">Length of matrices array.</param>
+		/// <param name="result">String, containing evaluation statistics.</param>
+		/// <returns>0 when success, -1 otherwise.</returns>
+		[DllImport(XGBoostLib)]
+		public static extern int XGBoosterEvalOneIter(
+			IntPtr bHandle,
+			int iter,
+			IntPtr[] dMtrices,
+			string[] names,
+			ulong len,
+			out string result);
+
+
+		/// <summary>
 		/// Make predictions based on given matrix.
 		/// </summary>
 		/// <param name="bHandle">The pointer to the model.</param>
@@ -256,6 +276,7 @@ namespace XGBoost
 			out ulong predsLen,
 			out IntPtr predsPtr);
 
+		//TODO: Documentation
 		[DllImport(XGBoostLib)]
 		public static extern int XGBoosterSaveModel(IntPtr bHandle, string fileName);
 
@@ -270,10 +291,14 @@ namespace XGBoost
 			IntPtr bHandle,
 			string fileName);
 
+		//TODO: Documentation
 		[DllImport(XGBoostLib)]
-		public static extern int XGBoosterDumpModel(IntPtr handle, string fmap,
-													int with_stats, out int out_len,
-													out string[] dumpStr);
+		public static extern int XGBoosterDumpModel(
+			IntPtr handle,
+			string fmap,
+			int with_stats,
+			out int out_len,
+			out string[] dumpStr);
 	}
 
 }

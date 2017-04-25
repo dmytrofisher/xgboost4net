@@ -64,6 +64,7 @@
     <Compile Include="DMatrix.cs" />
     <Compile Include="LabeledPoint.cs" />
     <Compile Include="XGBClassifier.cs" />
+    <Compile Include="XGBoost.cs" />
     <Compile Include="XGBoostError.cs" />
     <Compile Include="XGBoostException.cs" />
     <Compile Include="XGBoostLoader.cs" />
