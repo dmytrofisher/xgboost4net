@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-
-namespace XGBoost
+﻿namespace XGBoost
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Text;
+	using System.Threading.Tasks;
+	using System.Runtime.InteropServices;
+
 	class Booster
 	{
-		private IntPtr _handle = IntPtr.Zero;		
+		private IntPtr _handle;
 
 		/// <summary>
 		/// Create a new Booster with empty stage.
 		/// </summary>
 		/// <param name="parameters">Model parameters.</param>
 		/// <param name="cacheMatrices">
-		/// Cached <see cref="DMatrix"/> entries, 
+		/// Cached <see cref="DMatrix"/> entries,
 		/// the prediction of these matrics will become faster, than not-cached data.
 		/// </param>
 		/// <exception cref="XGBoostException">Native call error.</exception>
@@ -25,7 +25,7 @@ namespace XGBoost
 			int exitCode = XGBoostNative.XGBoosterCreate(matrixHandles, (ulong)matrixHandles.Length, out _handle);
 			XGBoostError.CheckError(exitCode);
 			SetParameter("seed", "0");
-			SetParameters(parameters);					
+			SetParameters(parameters);
 		}
 
 		/// <summary>
@@ -37,7 +37,7 @@ namespace XGBoost
 		/// <exception cref="XGBoostException">Native call error.</exception>
 		public Booster LoadModel(string path) {
 			if (path == null) {
-				throw new ArgumentNullException(nameof(path));
+				throw new ArgumentNullException("path");
 			}
 			Booster booster = new Booster(new Dictionary<string, object>(), new DMatrix[0]);
 			int exitCode = XGBoostNative.XGBoosterLoadModel(booster._handle, path);
@@ -126,7 +126,7 @@ namespace XGBoost
 		/// Implementation of Dispose pattern
 		/// </summary>
 		/// <param name="disposing">If managed resouses dispose required.</param>
-		protected virtual void Dispose(bool disposing) {			
+		protected virtual void Dispose(bool disposing) {
 			if (_handle != IntPtr.Zero) {
 				XGBoostNative.XGBoosterFree(_handle);
 				_handle = IntPtr.Zero;

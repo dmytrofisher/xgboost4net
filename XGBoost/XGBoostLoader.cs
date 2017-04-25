@@ -45,8 +45,8 @@ namespace XGBoost
 			return dllPath;
 		}
 
-		[DllImport("kernel32", 
-			SetLastError = true, 
+		[DllImport("kernel32",
+			SetLastError = true,
 			CharSet = CharSet.Unicode)]
 		private static extern IntPtr LoadLibrary(string lpFileName);
 	}

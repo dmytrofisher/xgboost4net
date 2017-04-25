@@ -12,7 +12,7 @@ namespace XGBoost
 	/// </summary>
 	public class DMatrix : IDisposable
 	{
-		private IntPtr _handle = IntPtr.Zero;
+		private IntPtr _handle;
 
 		/// <summary>
 		/// Sparse matrix storage type.
@@ -37,7 +37,7 @@ namespace XGBoost
 		/// <exception cref="XGBoostException">Native call error.</exception>
 		public DMatrix(string filePath) {
 			if (filePath == null) {
-				throw new ArgumentNullException(nameof(filePath));
+				throw new ArgumentNullException("filePath");
 			}
 			int exitCode = XGBoostNative.XGDMatrixCreateFromFile(filePath, 1, out _handle);
 			XGBoostError.CheckError(exitCode);
@@ -90,7 +90,7 @@ namespace XGBoost
 			ulong length;
 			IntPtr resultPtr;
 			int exitCode = XGBoostNative.XGDMatrixGetFloatInfo(_handle, field, out length, out resultPtr);
-			XGBoostError.CheckError(exitCode);			
+			XGBoostError.CheckError(exitCode);
 			float[] floatInfo = new float[(int)length];
 			Marshal.Copy(resultPtr, floatInfo, 0, (int)length);
 			return floatInfo;
@@ -120,6 +120,7 @@ namespace XGBoost
 		public int GetRowNumber() {
 			ulong nrow;
 			int exitCode = XGBoostNative.XGDMatrixNumRow(_handle, out nrow);
+			XGBoostError.CheckError(exitCode);
 			return (int)nrow;
 		}
 
@@ -131,11 +132,12 @@ namespace XGBoost
 		public int GetColNumber() {
 			ulong ncol;
 			int exitCode = XGBoostNative.XGDMatrixNumCol(_handle, out ncol);
+			XGBoostError.CheckError(exitCode);
 			return (int)ncol;
 		}
 
 		/// <summary>
-		/// Returns the pointer to underlying unmanaged matrix. 
+		/// Returns the pointer to underlying unmanaged matrix.
 		/// </summary>
 		/// <returns></returns>
 		public IntPtr GetHandle() {
@@ -153,15 +155,15 @@ namespace XGBoost
 			}
 		}
 
-		~DMatrix() {		
-		   Dispose(false);
+		~DMatrix() {
+			Dispose(false);
 		}
 
 		/// <summary>
 		/// Implementation of <see cref="IDisposable"/>.
-		/// </summary>					
-		public void Dispose() {			
-			Dispose(true);			
+		/// </summary>
+		public void Dispose() {
+			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 

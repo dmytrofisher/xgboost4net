@@ -23,7 +23,7 @@ namespace XGBoost
 			_parameters["n_estimators"] = nEstimators;
 			_parameters["silent"] = silent;
 			_parameters["objective"] = objective;
-			
+
 			_parameters["nthread"] = nThread;
 			_parameters["gamma"] = gamma;
 			_parameters["min_child_weight"] = minChildWeight;
@@ -34,7 +34,7 @@ namespace XGBoost
 			_parameters["reg_alpha"] = regAlpha;
 			_parameters["reg_lambda"] = regLambda;
 			_parameters["scale_pos_weight"] = scalePosWeight;
-			
+
 			_parameters["base_score"] = baseScore;
 			_parameters["seed"] = seed;
 			_parameters["missing"] = missing;
@@ -46,7 +46,8 @@ namespace XGBoost
 		}
 
 		public void Fit(float[][] data, float[] labels) {
-			
+			throw new NotImplementedException();
+
 		}
 
 	}

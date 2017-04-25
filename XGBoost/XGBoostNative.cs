@@ -7,8 +7,8 @@ using System.Runtime.InteropServices;
 
 namespace XGBoost
 {
-    public class XGBoostNative
-    {
+	public class XGBoostNative
+	{
 		private const string XGBoostLib = "libxgboost.dll";
 
 		/// <summary>
@@ -30,8 +30,8 @@ namespace XGBoost
 		/// <returns>0 when success, -1 otherwise.</returns>
 		[DllImport(XGBoostLib)]
 		public static extern int XGDMatrixCreateFromFile(
-			string fname, 
-			int silent, 
+			string fname,
+			int silent,
 			out IntPtr DMtrxHandle);
 
 		/// <summary>
@@ -45,14 +45,14 @@ namespace XGBoost
 		/// <returns>0 when success, -1 otherwise.</returns>
 		[DllImport(XGBoostLib)]
 		public static extern int XGDMatrixCreateFromMat(
-			float[] data, 
+			float[] data,
 			ulong nrow,
 			ulong ncol,
-			float missing, 
+			float missing,
 			out IntPtr handle);
 
 		/// <summary>
-		/// Create a mtrix content from CSC (Compressed Sparse Column) format.		
+		/// Create a mtrix content from CSC (Compressed Sparse Column) format.
 		/// </summary>
 		/// <param name="colPtr">Column headers - cumulative sum of presenting entries per column, starting with 0.</param>
 		/// <param name="indicies">The row indices of presenting entries.</param>
@@ -75,7 +75,7 @@ namespace XGBoost
 		/// <summary>
 		/// Create a mtrix content from CSC (Compressed Sparse Column) format.
 		/// </summary>
-		/// <param name="colPtr">Row headers - cumulative sum of presenting entries per row, starting with 0.</param>
+		/// <param name="rowPtr">Row headers - cumulative sum of presenting entries per row, starting with 0.</param>
 		/// <param name="indicies">The column indices of presenting entries.</param>
 		/// <param name="data">Matrix data.</param>
 		/// <param name="nindptr">Number of rows in the matrix + 1.</param>
@@ -110,10 +110,10 @@ namespace XGBoost
 		/// <returns>0 when success, -1 otherwise.</returns>
 		[DllImport(XGBoostLib)]
 		public static extern int XGDMatrixNumCol(IntPtr handle, out ulong ncol);
-		
+
 		/// <summary>
 		/// Free space in data matrix.
-		/// </summary>		
+		/// </summary>
 		/// <returns>0 when success, -1 otherwise.</returns>
 		[DllImport(XGBoostLib)]
 		public static extern int XGDMatrixFree(IntPtr handle);
@@ -128,9 +128,9 @@ namespace XGBoost
 		/// <returns>0 when success, -1 otherwise.</returns>
 		[DllImport(XGBoostLib)]
 		public static extern int XGDMatrixGetFloatInfo(
-			IntPtr handle, 
+			IntPtr handle,
 			string field,
-			out ulong length, 
+			out ulong length,
 			out IntPtr result);
 
 		/// <summary>
@@ -143,9 +143,9 @@ namespace XGBoost
 		/// <returns>0 when success, -1 otherwise.</returns>
 		[DllImport(XGBoostLib)]
 		public static extern int XGDMatrixSetFloatInfo(
-			IntPtr handle, 
+			IntPtr handle,
 			string field,
-			float[] array, 
+			float[] array,
 			ulong length);
 
 		/// <summary>
@@ -173,7 +173,7 @@ namespace XGBoost
 		[DllImport(XGBoostLib)]
 		public static extern int XGBoosterCreate(
 			IntPtr[] dmats,
-			ulong len, 
+			ulong len,
 			out IntPtr handle);
 
 		/// <summary>
@@ -193,8 +193,8 @@ namespace XGBoost
 		/// <returns>0 when success, -1 otherwise.</returns>
 		[DllImport(XGBoostLib)]
 		public static extern int XGBoosterSetParam(
-			IntPtr handle, 
-			string name, 
+			IntPtr handle,
+			string name,
 			string val);
 
 		/// <summary>
@@ -206,7 +206,7 @@ namespace XGBoost
 		/// <returns>0 when success, -1 otherwise.</returns>
 		[DllImport(XGBoostLib)]
 		public static extern int XGBoosterUpdateOneIter(
-			IntPtr bHandle, 
+			IntPtr bHandle,
 			int iter,
 			IntPtr dHandle);
 
@@ -249,11 +249,11 @@ namespace XGBoost
 		/// <returns>0 when success, -1 otherwise.</returns>
 		[DllImport(XGBoostLib)]
 		public static extern int XGBoosterPredict(
-			IntPtr bHandle, 
+			IntPtr bHandle,
 			IntPtr dHandle,
-			int optionMask, 
+			int optionMask,
 			int ntreeLimit,
-			out ulong predsLen, 
+			out ulong predsLen,
 			out IntPtr predsPtr);
 
 		[DllImport(XGBoostLib)]
@@ -267,7 +267,7 @@ namespace XGBoost
 		/// <returns>0 when success, -1 otherwise.</returns>
 		[DllImport(XGBoostLib)]
 		public static extern int XGBoosterLoadModel(
-			IntPtr bHandle, 
+			IntPtr bHandle,
 			string fileName);
 
 		[DllImport(XGBoostLib)]

@@ -10,8 +10,8 @@ using XGBoost;
 namespace XGBoost.Tests
 {
 	[TestFixture]
-    public class DMatrixTestCase
-    {
+	public class DMatrixTestCase
+	{
 
 		[Test]
 		public void CreateFromDenseMatrix() {
@@ -29,5 +29,6 @@ namespace XGBoost.Tests
 			matrix.GetColNumber().Should().Be(ncol);
 		}
 
-    }
+	}
+
 }
