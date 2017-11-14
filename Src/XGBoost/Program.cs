@@ -34,13 +34,15 @@ namespace XGBoost
 
 		public static void Main(string[] args) {
 			Console.WriteLine("Loading data");
-			string directory = "D:/ML/RPackage";
-			var trainMatrix = ParseMatrix($"{directory}/x_train.txt");
-			var testMatrix = ParseMatrix($"{directory}/x_test.txt");
-			var trainLabels = ParseLabels($"{directory}/y_train.txt");
-			var testLabels = ParseLabels($"{directory}/y_test.txt");
+			string directory = @"\\d-slobodianyk\Share\LeadData";
+			var trainMatrix = ParseMatrix($"{directory}\\x_train.txt");
+			var testMatrix = ParseMatrix($"{directory}\\x_test.txt");
+			var trainLabels = ParseLabels($"{directory}\\y_train.txt");
+			var testLabels = ParseLabels($"{directory}\\y_test.txt");
 			trainMatrix.Labels = trainLabels;
 			testMatrix.Labels = testLabels;
+			trainMatrix.Weights = Enumerable.Repeat(1f, trainLabels.Length).ToArray();
+			testMatrix.Weights = Enumerable.Repeat(1f, testLabels.Length).ToArray();
 
 			Console.WriteLine($"Train matrix: {trainMatrix.RowsCount} x {trainMatrix.ColumnsCount}");
 			Console.WriteLine($"Test matrix:  {testMatrix.RowsCount} x {testMatrix.ColumnsCount}");
@@ -82,7 +84,7 @@ namespace XGBoost
 			Console.WriteLine("Actual:  Disqualified {0,14} {1,5}", tn, fp);
 			Console.WriteLine("                 Sale {0,14} {1,5}", fn, tp);
 			Console.WriteLine("\nAccuracy: {0:0.##}", (tp + tn) * 1.0 / (tp + tn + fp + fn));
-		}	
+		}
 
 	}
 

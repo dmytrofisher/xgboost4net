@@ -2,7 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;	
+	using System.Linq;
 	using System.Runtime.InteropServices;
 
 	#region Class: Booster
@@ -173,10 +173,12 @@
 			throw new NotImplementedException();
 		}
 
+		//TODO: Documentation.
 		private string[] GetDumpInfo(bool withStats) {
 			throw new NotImplementedException();
 		}
 
+		//TODO: Documentation.
 		private byte[] ToByteArray() {
 			throw new NotImplementedException();
 		}

@@ -5,6 +5,10 @@
 
 	#region Class: XGBoostNative
 
+	/// <summary>
+	/// Represents native XGBoost native C API.
+	/// More details here: https://github.com/dmlc/xgboost/blob/master/include/xgboost/c_api.h
+	/// </summary>
 	public class XGBoostNative
 	{
 

@@ -124,7 +124,7 @@
 		/// Gets or sets the matrix labels.
 		/// Amount of weights is expeted to be equal to the number of rows in the matrix,
 		/// <see cref="XGBoostException"/> would be thrown otherwise.
-		/// </summary>		
+		/// </summary>
 		public float[] Labels {
 			get {
 				return GetFloatInfo("label");
@@ -176,7 +176,7 @@
 		#endregion
 
 		/// <summary>
-		/// Slice the <see cref="DMatrix"/> and return a new <see cref="DMatrix"/>, 
+		/// Slice the <see cref="DMatrix"/> and return a new <see cref="DMatrix"/>,
 		/// that only contains specified rows.
 		/// </summary>
 		/// <param name="rowIndex"></param>

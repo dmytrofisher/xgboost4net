@@ -3,6 +3,8 @@
 	using System;
 	using System.Collections.Generic;
 
+	#region Class: XGBoost
+
 	//TODO: Documentation.
 	public class XGBoost
 	{
@@ -12,11 +14,12 @@
 			return Booster.LoadModel(modelPath);
 		}
 
+		//TODO: Documentation
 		public static Booster Train(
-				DMatrix train, 
-				Dictionary<string, object> parameters, 
+				DMatrix train,
+				Dictionary<string, object> parameters,
 				int round,
-				Dictionary<string, DMatrix> watchers, 
+				Dictionary<string, DMatrix> watchers,
 				float[][] metrics) {
 			int n = watchers.Count;
 			string[] evalNames = new string[n];
@@ -61,4 +64,7 @@
 		}
 
 	}
+
+	#endregion
+
 }
