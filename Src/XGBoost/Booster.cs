@@ -2,12 +2,12 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using System.Threading.Tasks;
+	using System.Linq;	
 	using System.Runtime.InteropServices;
 
-	class Booster
+	#region Class: Booster
+
+	public class Booster
 	{
 		private IntPtr _handle;
 
@@ -21,7 +21,7 @@
 		/// </param>
 		/// <exception cref="XGBoostException">Native call error.</exception>
 		public Booster(Dictionary<string, object> parameters, DMatrix[] cacheMatrices) {
-			IntPtr[] matrixHandles = cacheMatrices.Select(matrix => matrix.GetHandle()).ToArray();
+			IntPtr[] matrixHandles = cacheMatrices.Select(matrix => matrix.Handle).ToArray();
 			int exitCode = XGBoostNative.XGBoosterCreate(matrixHandles, (ulong)matrixHandles.Length, out _handle);
 			XGBoostError.CheckError(exitCode);
 			SetParameter("seed", "0");
@@ -76,7 +76,7 @@
 		/// <param name="iter">Current iteration number.</param>
 		/// <exception cref="XGBoostException">Native call error.</exception>
 		public void Update(DMatrix train, int iter) {
-			int exitCode = XGBoostNative.XGBoosterUpdateOneIter(_handle, iter, train.GetHandle());
+			int exitCode = XGBoostNative.XGBoosterUpdateOneIter(_handle, iter, train.Handle);
 			XGBoostError.CheckError(exitCode);
 		}
 
@@ -91,7 +91,7 @@
 			if (grad.Length != hess.Length) {
 				throw new ArgumentException(string.Format("grad/hess length differ {0}/{1}", grad.Length, hess.Length));
 			}
-			int exitCode = XGBoostNative.XGBoosterBoostOneIter(_handle, train.GetHandle(), grad, hess, (ulong)grad.Length);
+			int exitCode = XGBoostNative.XGBoosterBoostOneIter(_handle, train.Handle, grad, hess, (ulong)grad.Length);
 			XGBoostError.CheckError(exitCode);
 		}
 
@@ -107,7 +107,7 @@
 			if (evalMatrices.Length != evalNames.Length) {
 				throw new ArgumentException(string.Format("evalMatrices/evalNames length differ {0}/{1}", evalMatrices.Length, evalNames.Length));
 			}
-			IntPtr[] handles = evalMatrices.Select(matrix => matrix.GetHandle()).ToArray();
+			IntPtr[] handles = evalMatrices.Select(matrix => matrix.Handle).ToArray();
 			string evalInfo;
 			int exitCode = XGBoostNative.XGBoosterEvalOneIter(_handle, iter, handles, evalNames, (ulong)handles.Length, out evalInfo);
 			XGBoostError.CheckError(exitCode);
@@ -125,7 +125,7 @@
 			optionMask = predLeaf ? 2 : optionMask;
 			ulong predictionsLength;
 			IntPtr predictionsPtr;
-			int exitCode = XGBoostNative.XGBoosterPredict(_handle, data.GetHandle(), optionMask, treeLimit,
+			int exitCode = XGBoostNative.XGBoosterPredict(_handle, data.Handle, optionMask, treeLimit,
 				out predictionsLength, out predictionsPtr);
 			XGBoostError.CheckError(exitCode);
 			int length = (int)predictionsLength;
@@ -173,6 +173,14 @@
 			throw new NotImplementedException();
 		}
 
+		private string[] GetDumpInfo(bool withStats) {
+			throw new NotImplementedException();
+		}
+
+		private byte[] ToByteArray() {
+			throw new NotImplementedException();
+		}
+
 		/// <summary>
 		/// Implementation of Dispose pattern
 		/// </summary>
@@ -196,4 +204,7 @@
 			GC.SuppressFinalize(this);
 		}
 	}
+
+	#endregion
+
 }

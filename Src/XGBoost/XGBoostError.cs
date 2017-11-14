@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XGBoost
+﻿namespace XGBoost
 {
+	#region Class: XGBoostError
+
 	/// <summary>
 	/// Simple error handle for XGBoost.
 	/// </summary>
 	class XGBoostError
 	{
+
+		#region Methods: Public
+
 		/// <summary>
 		/// Checks the return value of C API.
 		/// </summary>
@@ -21,5 +20,11 @@ namespace XGBoost
 				throw new XGBoostException(XGBoostNative.XGBGetLastError());
 			}
 		}
+
+		#endregion
+
 	}
+
+	#endregion
+
 }

@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XGBoost
+﻿namespace XGBoost
 {
+	using System;
+	using System.Collections.Generic;
+
 	//TODO: Documentation.
-	class XGBoost
+	public class XGBoost
 	{
-		public Booster Train(DMatrix train, Dictionary<string, object> parameters, int round,
-				Dictionary<string, DMatrix> watchers, float[][] metrics) {
+
+		//TODO: Documentation.
+		public static Booster LoadModel(string modelPath) {
+			return Booster.LoadModel(modelPath);
+		}
+
+		public static Booster Train(
+				DMatrix train, 
+				Dictionary<string, object> parameters, 
+				int round,
+				Dictionary<string, DMatrix> watchers, 
+				float[][] metrics) {
 			int n = watchers.Count;
 			string[] evalNames = new string[n];
 			DMatrix[] evalMatrices = new DMatrix[n];
@@ -32,6 +39,7 @@ namespace XGBoost
 
 			for (int iter = 0; iter < round; iter++) {
 				booster.Update(train, iter);
+
 				if (n > 0) {
 					string evalInfo;
 					if (metrics == null) {
@@ -40,9 +48,13 @@ namespace XGBoost
 						float[] m = new float[n];
 						evalInfo = booster.EvalSet(evalMatrices, evalNames, iter, out m);
 						for (int i = 0; i < n; i++) {
-							metrics[i][iter] = m[i];
+							//TODO: Write metrics
+							//metrics[i][iter] = m[i];
+							Console.WriteLine($"metrics[{i}][{iter}] = {m[i]}");
 						}
 					}
+					//TODO: Remove
+					Console.WriteLine($"evalInfo: {evalInfo}");
 				}
 			}
 			return booster;

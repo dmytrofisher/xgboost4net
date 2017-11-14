@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-
-namespace XGBoost
+﻿namespace XGBoost
 {
+	using System;
+	using System.Runtime.InteropServices;
+
+	#region Class: DMatrix
+
 	/// <summary>
 	/// Represent DMatrix for XGBoost.
 	/// </summary>
 	public class DMatrix : IDisposable
 	{
-		private IntPtr _handle;
 
 		/// <summary>
 		/// Sparse matrix storage type.
@@ -29,6 +26,14 @@ namespace XGBoost
 			/// </summary>
 			CSC
 		}
+
+		#region Fields: Private
+
+		private IntPtr _handle;
+
+		#endregion
+
+		#region Constructors: Public
 
 		/// <summary>
 		/// Creates an instance of <see cref="DMatrix"/> from specified file in LibSVM format.
@@ -76,13 +81,85 @@ namespace XGBoost
 			_handle = handle;
 		}
 
+		#endregion
+
+		#region Properties: Public
+
 		/// <summary>
-		/// Set labels for <see cref="DMatrix"/>.
+		/// Get the number of rows.
 		/// </summary>
-		/// <param name="labels">Array of labels.</param>
 		/// <exception cref="XGBoostException">Native call error.</exception>
-		public void SetLabels(float[] labels) {
-			int exitCode = XGBoostNative.XGDMatrixSetFloatInfo(_handle, "label", labels, (ulong)labels.Length);
+		public int RowsCount {
+			get {
+				ulong nrow;
+				int exitCode = XGBoostNative.XGDMatrixNumRow(_handle, out nrow);
+				XGBoostError.CheckError(exitCode);
+				return (int)nrow;
+			}
+		}
+
+		/// <summary>
+		/// Get the number of columns.
+		/// </summary>
+		/// <exception cref="XGBoostException">Native call error.</exception>
+		public int ColumnsCount {
+			get {
+				ulong ncol;
+				int exitCode = XGBoostNative.XGDMatrixNumCol(_handle, out ncol);
+				XGBoostError.CheckError(exitCode);
+				return (int)ncol;
+			}
+		}
+
+		/// <summary>
+		/// Gets the pointer to underlying unmanaged matrix.
+		/// </summary>
+		public IntPtr Handle {
+			get {
+				return _handle;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the matrix labels.
+		/// Amount of weights is expeted to be equal to the number of rows in the matrix,
+		/// <see cref="XGBoostException"/> would be thrown otherwise.
+		/// </summary>		
+		public float[] Labels {
+			get {
+				return GetFloatInfo("label");
+			}
+			set {
+				if (value.Length != RowsCount) {
+					throw new XGBoostException("The length of labels must equal to the number of rows");
+				}
+				SetFloatInfo("label", value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets weights for each matrix row.
+		/// Amount of weights is expeted to be equal to the number of rows in the matrix,
+		/// <see cref="XGBoostException"/> would be thrown otherwise.
+		/// </summary>
+		public float[] Weights {
+			get {
+				return GetFloatInfo("weight");
+			}
+			set {
+				if (value.Length != RowsCount) {
+					throw new XGBoostException("The length of weights must equal to the number of rows");
+				}
+				SetFloatInfo("weight", value);
+			}
+		}
+
+		#endregion
+
+		#region Methods: Private
+
+		private void SetFloatInfo(string field, float[] values) {
+			int exitCode = XGBoostNative.XGDMatrixSetFloatInfo(_handle, field, values, (ulong)values.Length);
 			XGBoostError.CheckError(exitCode);
 		}
 
@@ -96,52 +173,19 @@ namespace XGBoost
 			return floatInfo;
 		}
 
-		/// <summary>
-		/// Gets matrix labels.
-		/// </summary>
-		/// <returns>Labels array.</returns>
-		/// <exception cref="XGBoostException">Native call error.</exception>
-		public float[] GetLabels() {
-			return GetFloatInfo("label");
-		}
+		#endregion
 
+		/// <summary>
+		/// Slice the <see cref="DMatrix"/> and return a new <see cref="DMatrix"/>, 
+		/// that only contains specified rows.
+		/// </summary>
+		/// <param name="rowIndex"></param>
+		/// <returns></returns>
 		public DMatrix Slice(int[] rowIndex) {
 			IntPtr slicedPtr;
 			int exitCode = XGBoostNative.XGDMatrixSliceDMatrix(_handle, rowIndex, (ulong)rowIndex.Length, out slicedPtr);
 			XGBoostError.CheckError(exitCode);
 			return new DMatrix(slicedPtr);
-		}
-
-		/// <summary>
-		/// Get the number of rows.
-		/// </summary>
-		/// <returns>Number of rows in the matrix.</returns>
-		/// <exception cref="XGBoostException">Native call error.</exception>
-		public int GetRowNumber() {
-			ulong nrow;
-			int exitCode = XGBoostNative.XGDMatrixNumRow(_handle, out nrow);
-			XGBoostError.CheckError(exitCode);
-			return (int)nrow;
-		}
-
-		/// <summary>
-		/// Get the number of columns.
-		/// </summary>
-		/// <returns>Number of columns in the matrix.</returns>
-		/// <exception cref="XGBoostException">Native call error.</exception>
-		public int GetColNumber() {
-			ulong ncol;
-			int exitCode = XGBoostNative.XGDMatrixNumCol(_handle, out ncol);
-			XGBoostError.CheckError(exitCode);
-			return (int)ncol;
-		}
-
-		/// <summary>
-		/// Returns the pointer to underlying unmanaged matrix.
-		/// </summary>
-		/// <returns></returns>
-		public IntPtr GetHandle() {
-			return _handle;
 		}
 
 		/// <summary>
@@ -168,4 +212,7 @@ namespace XGBoost
 		}
 
 	}
+
+	#endregion
+
 }

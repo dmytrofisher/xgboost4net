@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace XGBoost
 {
+	/*
 	class XGBClassifier
 	{
 		private Dictionary<string, object> _parameters = new Dictionary<string, object>();
@@ -51,4 +52,5 @@ namespace XGBoost
 		}
 
 	}
+	*/
 }

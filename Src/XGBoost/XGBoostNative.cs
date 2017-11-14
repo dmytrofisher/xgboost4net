@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-
-namespace XGBoost
+﻿namespace XGBoost
 {
+	using System;
+	using System.Runtime.InteropServices;
+
+	#region Class: XGBoostNative
+
 	public class XGBoostNative
 	{
+
+		#region Constants: Private
+
 		private const string XGBoostLib = "libxgboost.dll";
+
+		#endregion
+
+		#region Methods: Public
 
 		/// <summary>
 		/// Get string message of the last error.
@@ -299,6 +304,11 @@ namespace XGBoost
 			int with_stats,
 			out int out_len,
 			out string[] dumpStr);
+
+		#endregion
+
 	}
+
+	#endregion
 
 }

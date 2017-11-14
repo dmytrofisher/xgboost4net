@@ -25,8 +25,8 @@ namespace XGBoost.Tests
 
 			DMatrix matrix = new DMatrix(data, nrow, ncol);
 
-			matrix.GetRowNumber().Should().Be(nrow);
-			matrix.GetColNumber().Should().Be(ncol);
+			matrix.RowsCount.Should().Be(nrow);
+			matrix.ColumnsCount.Should().Be(ncol);
 		}
 
 	}
